@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+
+{% block body-content %}
+<div>
+	<center>
+		{% if messages %}
+		    {% for message in messages %}
+		      <span class="{{ message.tags }}">{{ message }}</span>
+		    {% endfor %}
+		{% endif %}
+		
+		<h2>Welcome {{ request.user.full_name }}</h2>
+	</center>		
+</div>
+{% endblock body-content %}

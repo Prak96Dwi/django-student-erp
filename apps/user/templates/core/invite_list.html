@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+
+
+{% block body-content %}
+<div>
+	<center>
+		<h2>Invitation List</h2>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>S. No. </th>
+					<th>Faculty Name</th>
+					<th>Faculty Email</th>
+					<th>Invite Status</th>
+					<th>Date of Invite</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in data %}
+				<tr>
+					<td>{{ item.id }}</td>
+					<td>{{ item.name_fac }}</td>
+					<td>{{ item.email_fac }}</td>
+					<td>{{ item.invite_status }}</td>
+					<td>{{ item.date_of_invite }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</center>
+</div>
+{% endblock body-content %}

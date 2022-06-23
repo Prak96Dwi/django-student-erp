@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+
+{% block body-content %}
+<div>
+	<center>
+
+		<h2>Send Invitation Email to Student </h2>
+		<form method="POST">
+			{% csrf_token %}
+
+			{{ form.as_p }}
+
+			<input type="Submit" name="" value="Send Email">
+		</form>
+	</center>
+</div>
+{% endblock body-content %}

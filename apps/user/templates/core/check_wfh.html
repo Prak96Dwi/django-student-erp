@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+
+{% block body-content %}
+<div>
+	<center>
+		<div>
+			<h2>Student Homework Submission Data</h2>
+			<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>S. No. </th>
+					<th>Student Name</th>
+					<th>Title</th>
+					<th>Status</th>
+					<th>Grade</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in data %}
+				<tr>
+					<td>{{ item.id }}</td>
+					<td>{{ item.stu_name }}</td>
+					<td>{{ item.title }}</td>
+					{% if item.status == 'None Done' %}
+					<td>Not Done</td>
+					{% else %}
+					<td>{{ item.status }}</td>
+					{% if item.grade %}
+					<td>{{ item.grade }}</td>
+					{% else %}
+					<td>
+						<a href="{% url 'grade-update' item.id %}"><button>Give Grade</button> </a>
+					</td>
+					{% endif %}
+					{% endif %}
+				</tr>
+				{% endfor %}
+			</tbody>
+			</table>
+		</div>
+	</center>
+</div>
+{% endblock body-content %}

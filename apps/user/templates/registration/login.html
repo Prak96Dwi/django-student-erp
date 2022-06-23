@@ -1,0 +1,22 @@
+{% extends 'registration/base.html' %}
+
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST">
+			{% csrf_token %}
+			<h2>Login Form</h2>
+
+			{% for fm in form %}
+			{{ fm.label_tag }} {{ fm }} {{ fm.errors }} <br>
+			{% endfor %}
+			<br>
+
+			<input type="submit" name="" value="LOGIN">
+
+			{{ key }}
+		</form>
+	</center>
+</div>
+{% endblock body-content %}

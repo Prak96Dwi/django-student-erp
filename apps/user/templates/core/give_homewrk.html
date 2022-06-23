@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %}
+
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST" style="margin-left:20%; margin-right:20%; margin-top: 20px;
+		 background-color: white; " novalidate>
+			{% csrf_token %}
+			<h3>Give HomeWork Form</h3><br><br>
+			<label>Full Name :  </label>
+			{{ request.user.full_name }}
+			<br>
+			<label>Class Name : </label>
+			{{ request.user.class_name }}
+
+			{% for fm in form %}
+				<div class="row form-group">
+					<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					    <label for="exampleInputUsername">{{ fm.label_tag }}</label>
+					</div>
+					<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+						{{ fm }}
+					</div>
+				</div>
+			{% endfor %}
+
+
+			<input type="submit" name="" value="Give Home Work">
+		</form>
+		
+	</center>
+</div>
+{% endblock body-content %}

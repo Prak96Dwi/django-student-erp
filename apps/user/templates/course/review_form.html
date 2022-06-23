@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST" style="margin-left:20%; margin-right:20%; margin-top: 20px;
+		 background-color: white;">
+			{% csrf_token %}
+
+			<h3>Rate & Review Form</h2><br>
+
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Class Teacher Name</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					{{ teacher_name.full_name }}
+				</div>
+			</div>
+
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Course Name : </label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<select name="course_name" class="form-control form-control-sm" id="id_course_name">
+					  <option value="--------">---------</option>
+					  {% for i in subjects %}
+					  <option value="{{ i.course_name }}">{{ i.course_name }}</option>
+					  {% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Rate : </label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					Rating must be given between 1 to 5
+					<input type="number" name="rate" value="" class="form-control" max="5" min="1">
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Review : </label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<textarea class="form-control" 
+					placeholder="Give Your Reviews..."
+					name="review" 
+					rows="5"></textarea>
+				</div>
+			</div>
+
+			<input type="submit" name="" value="Submit">
+		</form>
+	</center>
+</div>
+
+{% endblock body-content %}

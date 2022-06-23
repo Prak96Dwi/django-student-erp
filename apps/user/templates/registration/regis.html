@@ -1,0 +1,119 @@
+{% extends 'registration/base.html' %}
+
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST" style="margin-left:20%; margin-right:20%; margin-top: 20px;
+		 background-color: white; " novalidate>
+			{% csrf_token %}
+
+			<h2>Registration Page</h2>
+			{{ form.errors }}
+					<div class="row form-group">
+						<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+						    <label for="exampleInputUsername">Username</label>
+						</div>
+						<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+							{{ form.username }}
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					    	<label for="exampleInputFullname">Full Name</label>
+					    </div>
+					    <div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					    	{{ form.full_name }}
+						</div>
+				    </div>
+					  <div class="row form-group">
+					  	<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					    <label for="exampleInputFatherName">Father Name</label>
+					    </div>
+					    <div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					    {{ form.father_name }}
+					</div>
+					  </div>
+				  <div class="row form-group">
+					  	<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					    	<label for="exampleInputMotherName">Mother Name</label>
+					    </div>
+					    <div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					    	{{ form.mother_name }}
+						</div>
+				  </div>
+				  <div class="row form-group">
+					  	<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					    	<label for="exampleInputEmail">Email</label>
+					    </div>
+					    <div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					    	{{ form.email }}
+					    </div>
+				  </div>
+				{% if role == "teacher" %}
+				  <div class="row form-group">
+					  	<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					    	<label for="exampleInputStatus">Status</label>
+					    </div>
+						<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+						    {{ form.status }}
+						</div>
+				  </div>
+				{% else %}
+					<div class="row form-group">
+					  	<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					    	<label for="exampleInputStatus">Status</label>
+					    </div>
+						<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+						    {{ form.status }}
+						</div>
+				  	</div>
+				  	<div class="row form-group">
+					  	<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					    	<label for="exampleInputStatus">Roll No</label>
+					    </div>
+						<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+						    {{ form.roll_no }}
+						</div>
+				  	</div>
+				{% endif %}
+				  <div class="row form-group">
+					  	<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					   		 <label for="exampleInputMobNo">Mobile Number</label>
+						</div>
+						<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					    	{{ form.mobile_no }}
+						</div>
+				  </div>
+				  <div class="row form-group">
+				  	<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				   		 <label for="exampleInputClassName">Class Name</label>
+					</div>
+					<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+				    	{{ form.class_name }}
+					</div>
+				  </div>
+				  <div class="row form-group">
+				  	<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				   		 <label for="exampleInputClassName">Password</label>
+					</div>
+					<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+				    	{{ form.password1 }}
+					</div>
+				  </div>
+				  <div class="row form-group">
+				  	<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				   		 <label for="exampleInputClassName">Confirm Password</label>
+					</div>
+					<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+				    	{{ form.password2 }}
+					</div>
+				  </div>
+			<input type="submit" name="" class="btn btn-outline-primary" value="Submit">
+		</form>
+		<div style="margin-bottom: 50px;">
+			
+		</div>
+	</center>
+</div>
+{% endblock body-content %}

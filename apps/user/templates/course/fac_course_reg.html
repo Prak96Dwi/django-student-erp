@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST" style="margin-left:20%; margin-right:20%; margin-top: 20px;
+		 background-color: white;" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			<h2>Course Registration Form</h2>
+
+			{{ form.as_p }}
+
+			<input type="submit" name="" value="Submit">
+		</form>
+	</center>
+</div>
+{% endblock body-content %}

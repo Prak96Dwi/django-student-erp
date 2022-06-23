@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block body-content %}
+<div>
+	<center>
+		<h2>Rate & Reviews</h2>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>S. No. </th>
+					<th>Faculty Name</th>
+					<th>Course Name</th>
+					<th>Rate</th>
+					<th>Review</th>
+					<!-- <th>Average Rate</th> -->
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in rate_data %}
+					<tr>
+						<td>{{ item.id }}</td>
+						<td>{{ item.fac_name }}</td>
+						<td>{{ item.course_name }}</td>
+						<td>{{ item.rate }}</td>
+						<td>{{ item.review }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</center>
+</div>
+
+{% endblock body-content %}

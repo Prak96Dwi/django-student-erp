@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST" style="margin-left:20%; margin-right:20%; margin-top: 20px;
+		 background-color: white;" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			<h2>Content Upload Form</h2>
+
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Name</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					{{ request.user.full_name }}
+				</div>
+			</div>
+
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Your Courses</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<select name="course_name" class="form-control form-control-sm" id="id_course_name">
+					  {% for i in course_content %}
+					  <option value="{{ i.course_name }}">{{ i.course_name }}</option>
+					  {% endfor %}
+					  <option value="--------">---------</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Subject Title</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<input type="text" class="form-control" name="subject_title" id="id_content">
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Upload PDF</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<input type="file" name="pdfcontent" class="form-control" id="id_content">
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Upload Video</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					<input type="file" name="videocontent" class = "form-control" id="id_content">
+				</div>
+			</div><br>
+			
+			
+			<input type="submit" name="" value="Upload">
+		</form>
+	</center>
+</div>
+
+{% endblock body-content %}
+
+

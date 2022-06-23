@@ -1,0 +1,65 @@
+{% extends 'core/base.html' %}
+
+
+
+
+{% block body-content %}
+<div>
+	<center>
+		<form method="POST" style="margin-left:20%; margin-right:20%; margin-top: 20px;
+		 background-color: white; " novalidate>
+			{% csrf_token %}
+		<h2>Question List</h2>
+		{{ form.errors }}
+		<label for="exampleInputUsername"><h2>{{ item.title }}</h2> </label>
+		{% for item in data %}
+			
+			<div class="row form-group">
+				<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				    <label for="exampleInputUsername">Ques. {{ item.id }}</label>
+				</div>
+				<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+					 {{ item.ques }}
+				</div>
+			</div>
+			<table>
+				<tr>
+					<td>
+						<input type="radio"  class="rb" name={{item.id}} id="Option1" 
+						value="{{ item.opt1}}"> {{ item.opt1 }}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="radio" class="rb" name={{item.id}} id="Option2"
+						 value="{{ item.opt2}}"> {{ item.opt2 }}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="radio" class="rb" name={{item.id}} 
+						  id="Option3" value="{{ item.opt3}}"> {{ item.opt3 }}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="radio" class="rb" name={{item.id}} 
+						  id="Option4" value="{{ item.opt4}}"> {{ item.opt4 }}
+					</td>
+				</tr>
+			</table>
+		{% endfor %}
+		<br>
+			<input type="submit" name="" value="Submit">
+			</form><br>
+		<br>
+		{% if messages %}
+		<ul class="messages">
+		    {% for message in messages %}
+		    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		    {% endfor %}
+		</ul>
+		{% endif %}
+	</center>
+</div>
+{% endblock body-content %}

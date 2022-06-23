@@ -1,0 +1,373 @@
+{% extends 'core/base.html' %}
+{% load course_name_format %}
+{% load stu_name_format %}
+
+{% block star-rating-css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
+integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" 
+crossorigin="anonymous"/>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<link rel="stylesheet" type="text/css" 
+href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
+<style type="text/css">
+	.stars-outer{
+		position: relative;
+		display: inline-block;
+	}
+
+	.stars-inner{
+		position: absolute;
+		top: 0;
+		left: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		width: 0;
+	}
+
+	.stars-outer::before {
+	    content: "\f005 \f005 \f005 \f005 \f005";
+	    font-family: 'Font Awesome 5 Free';
+	    font-weight: 200;
+	    color: #ccc;
+	}
+
+	.stars-inner::before {
+	    content: "\f005 \f005 \f005 \f005 \f005";
+	    font-family: 'Font Awesome 5 Free';
+	    font-weight: 900;
+	    color: #f8ce0b;
+	}
+
+</style>
+{% endblock star-rating-css %}
+
+{% block body-content %}
+
+<div>
+
+	<div class="modal" tabindex="-1" role="dialog" id="myModal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Modal title</h5>
+	      </div>
+	      <div class="modal-body">
+	        <p>Email Sent Successfully!!</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Displaying information of course in which the user want to enrolled -->
+    <div class="container"><br><br>
+		 <div class="card ratecard" data-rating="{{ ele.average_rate }}" 
+		  data-course="{{ ele.course_name|course_name_change }}">
+		  <div class="card-body">
+		  	<div class="row">
+		  		<div class="col-md-6 col-bg-6 col-sm-6 col-lg-6">
+		  			<h3 class="card-title">
+		  				<a href="#">{{ ele.course_name }}</a>
+		  			</h3>
+		  			<h5>{{ ele.course_desc }}</h5>
+				    <b style="color: #cc6600">{{ ele.average_rate }}</b>
+		    		<div class="stars-outer">
+				 		<div class="stars-inner {{ ele.course_name|course_name_change }}">
+				 			
+				 		</div>
+				 	</div>
+						 <span class="number-rating"></span>   					
+				    <small> ({{ ele.no_of_students_rated }} ratings)</small><br>
+				    <small> {{ ele.no_of_students_enrolled }} students enrolled</small><br>
+				    <small>Created by 
+				    	<b><a href="#">{{ ele.fac_name }}</a></b>
+				    </small><br>
+				    <button
+					    onclick= "sendEmailFormUrl('{{ele.id}}')"
+					    href="#" id="shareid-{{ ele.id }}">
+						Share
+					</button>
+				    <div id="shareformid-{{ ele.id }}" class="shareformclass">
+				    	<input type="email" name="sharemail" id="friendemailid-{{ ele.id }}" 
+				    	placeholder="Enter Email Address" />
+				    	<input 
+				    	onclick= "sendEmailUrl('{{ele.id}}')" 
+				    	type="submit" 
+				    	name="" 
+				    	value="Send link" 
+				    	class="sendlinkbtn-{{ ele.id }}">
+				    </div>
+					<!-- <a 
+					href="mailto:?subject=UdemyCourseLink&body=127.0.0.1:8000{{ request.path }}">
+					Share link with email
+					</a> -->
+		  		</div>
+		  		<div class="col-md-4 col-bg-4 col-sm-4 col-lg-4">
+		  			<img class="card-img-top" 
+		  			 src="{{ ele.course_pic.url }}" 
+			  		 alt="Card image cap"
+			  		 height="100px" width="50px">
+		  		</div>
+		  	</div>
+		  </div>
+		</div>
+    </div><br><br>
+
+    <!-- Displaying information of instructor -->
+    <fieldset style=" margin-left: 120px; margin-right: 120px;">
+	    <h2>Instructor</h2>
+    	<div class="card">
+    		<div class="card-body">
+	    		<h5 class="card-title">
+	    			<a href="#">{{ ele.fac_name }}</a>
+	    		</h5>
+	    		<p class="card-text">
+	    			<b style="color: #cc6600">{{ ele.average_rate }}</b> Instructor Rating<br>
+	    			<i class="fas fa-comments"></i>
+	    			{{ ele.no_of_students_rated }} Reviews <br>
+	    			<i class='fas fa-graduation-cap'></i>
+	    			{{ ele.no_of_students_enrolled }} Students
+				 </p>
+    		</div>
+    	</div>
+    </fieldset><br><br>
+
+    <!-- Displaying Review form to a student -->
+    {% if request.user.status == 'student' %}
+	    <fieldset style=" margin-left: 120px; margin-right: 120px;">
+	    	<div class="card">
+	    		<form method="POST" style="margin-left:2%; margin-right:20%; margin-top: 20px;
+			 		background-color: white;">
+				{% csrf_token %}
+				<center><h3>Give Your Rate & Review</h2></center><br>
+				<div class="row form-group">
+					<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					    <label for="exampleInputUsername">Rate : </label>
+					</div>
+					<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+						<select name="rate" class = "form-control" id="rate_id">
+						  <option value="Rate">Rate</option>
+						  <option value="1">1</option>
+						  <option value="2">2</option>
+						  <option value="3">3</option>
+						  <option value="4">4</option>
+						  <option value="5">5</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class = "col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					    <label for="exampleInputUsername">Review : </label>
+					</div>
+					<div class = "col-md-8 col-bg-8  col-sm-8 col-lg-8">
+						<textarea class="form-control" 
+						placeholder="Give Your Reviews..."
+						name="review" 
+						rows="5">
+						</textarea>
+					</div>
+				</div>
+				<center>
+					<input type="submit" name="" class="btn btn-outline-primary" value="Submit">
+				</center>
+			</form>
+	    	</div>
+	    </fieldset><br><br>
+	{% endif %}
+    
+    <!-- Displaying Reviews of course of particulary faculty -->
+    <fieldset style=" margin-left: 120px; margin-right: 120px;">
+    	<nav class="navbar navbar-expand-lg ">
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+		  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+		  	<h3>Reviews</h3>
+		    <form class="form-inline my-2 my-lg-0" name="GET"> 
+		    	<div style="margin-left: 700px;">
+		    		<select name="revsort" id="reviewid" class="dropdown form-control" >
+			    		<option value="">Sort by</option>
+						<option value="newest">Newest</option>
+						<option value="oldest">Oldest</option>
+						<option value="most-upvotes">Most Upvotes</option>
+						<option value="least-upvotes">Least Upvotes</option>
+					</select>
+					<button class="btn btn-outline-primary">Search</button>
+		    	</div>
+			</form>
+		  </div>
+		</nav>
+
+    	{% for review in review_data %}
+	    	<div class="card ratecard" data-rating="{{ review.rate }}" 
+		  		data-course="{{ review.stu_name|student_name_change }}">
+				<div class="card-body">
+					<h5 class="card-title">{{ review.stu_name }}</h5>
+					<div class="stars-outer">
+						<div class="stars-inner {{ review.stu_name|student_name_change }}"></div>
+						{{ review.review_date }}
+					</div>
+					<p class="card-text">{{ review.review }}</p>
+					<small id="{{ review.id }}">Was this review helpful ?</small><br>
+					<button onclick= "changeText('{{review.id}}')" 
+						style="border-radius: 50%;" 
+						id="btn-{{ review.id }}" 
+						class="btn btn-outline-secondary btn-{{ review.id }} upvotebtn"
+						data-facid = '{{ ele.id }}'
+						data-reviewid = '{{ review.id }}'>
+					<i class="far fa-thumbs-up btn-{{ review.id }}" ></i>
+					</button>
+					<span class="upvote-count" id="upvotes-{{ review.id }}">{{ review.no_of_upvotes }}</span> Upvotes
+				</div>
+			</div><br>
+    	{% endfor %}
+
+    </fieldset>
+</div>
+{% endblock body-content %}
+
+{% block star-rating-js %}
+
+<script type="text/javascript">
+	const rateArray = [];
+	const coursearray = []''
+	let myRating = new Object();
+
+	$('.ratecard').each(function(event) {
+	 	let averateRating = $(this).data('rating');
+	 	rateArray.push(averateRating)
+
+	 	let courseName = $(this).data('course');
+	 	coursearray.push(courseName)
+	});
+
+	for (let i = 0; i < ratearray.length; i++) {
+		let courseArr = coursearray[i]
+		let rateArr = rateArray[i]
+	 	myRating[coursearr] = rateArr;
+	}
+
+	// Total Stars
+	const starTotal = 5;
+
+	// Run getRatings when DOM Loads
+	document.addEventListener('DOMContentLoaded', getRatings());
+
+	// Get getRatings
+	function getRatings(){
+
+		for(let element in myRating){
+
+			// Get Percentage
+			const starPercentage = (myRating[element] / starTotal) * 100;
+
+			// Round to nearest 10
+			const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
+
+			// Set width of stars-inner to Percentage
+			document.querySelector(`.${element}`).style.width = starPercentageRounded
+			
+		} // forloop closes
+	}	 // getRatings closes
+
+	// Button change color function
+	function changeText(newid) {
+		var elem = document.getElementById(newid);
+		elem.innerHTML = "Thank you for your review"
+		var btnid = "btn-"+newid
+		document.getElementById(btnid).style.visibility='hidden';
+	}	// Button change color function closes
+</script>
+{% endblock star-rating-js %}
+
+{% block ajax-upvoting-js %}
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		$('.upvotebtn').click(function () {
+			var $upvoteButton = $(this);
+			var facultycourseid = $(this).data('facid');
+			var reviewid = $(this).data('reviewid');
+
+
+			$.ajax({
+		       type:  "GET",
+		       url : "{% url "adding-upvotes-member" %}",
+		       data : {
+	            'facregid' : facultycourseid,
+	            'reviewid' : reviewid
+	            },
+		       dataType: 'json',
+		       success: function(data){
+		       	var vote_element = data[0]
+
+
+		       	$upvoteButton.siblings('.upvote-count').text(vote_element);
+		       	// document.querySelector('#upvotesid').innerText = vote_element;
+
+		       } // success block closes
+   			})  // ajax closes
+
+		}) // onclick function
+
+	}) // main document closes
+</script>
+{% endblock ajax-upvoting-js %}
+
+
+
+{% block ajax-share-link-js %}
+
+<script type="text/javascript">
+	function sendEmailUrl(formid){
+
+			// email form id 
+			var emailtextid = "#friendemailid-"+formid
+
+			var receiveremailid = $(emailtextid).val();
+
+			$.ajax({
+			       type:  "GET",
+			       url : "{% url "ajax-send-url-link" %}",
+			       data : {
+		            'email' : receiveremailid,
+		            'formid' : formid
+		            },
+			       dataType: 'json',
+			       success: function(data){
+
+			       	console.log(data[0])
+			       	$('#myModal').modal('show')
+
+			       } // success block closes
+	   			})  // ajax closes
+			$(".shareformclass").hide();
+		}  // onFormLoad function closes
+
+
+		function sendEmailFormUrl(newid){
+			var formid = "shareformid-"+newid
+			$("#shareformid-"+newid).toggle();
+		}
+
+		$(document).ready(function(){
+
+			// hide share form
+			$(".shareformclass").hide();
+
+		}) // main document closes
+</script>
+{% endblock ajax-share-link-js %}
+
+
+
+
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+     viewBox="0 0 24 24"  fill = "#e67300">
+   <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
+   />
+</svg> -->

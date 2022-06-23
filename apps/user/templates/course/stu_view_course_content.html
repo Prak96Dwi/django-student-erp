@@ -1,0 +1,39 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block body-content %}
+<div>
+	<center>
+		<h3>Your Course Content</h3><br>
+	    <div class="container">
+	    	{% for ele in faculty_crs %}
+
+		    	{% for sub in data %}
+		    		{% if sub.course_name == ele.course_name %}
+					<div class="card">
+					  <div class="card-body">
+					  	<div class="row">
+					  		<div class="col-md-4 col-bg-4 col-sm-4 col-lg-4">
+					  			<img class="card-img-top" src="{{ ele.course_pic.url }}" 
+						  		alt="Card image cap"
+						  		height="100px" width="50px">
+					  		</div>
+					  		<div class="col-md-8 col-bg-8 col-sm-8 col-lg-8">
+					  			<h5 class="card-title">{{ sub.course_name }}</h5>
+							    <p class="card-text">{{ sub.subject_title }}</p>
+							     <a href="{{ sub.pdf_content.url }}" class="card-link">View PDF</a>
+							    <a href="{{ sub.video_content.url }}" class="card-link">Watch Video</a>
+					  		</div>
+					  	</div>
+					  </div>
+					</div><br><br>
+					{% endif %}
+				{% endfor %}
+	    	{% endfor %}
+			
+	    </div>  
+	</center>
+</div>
+
+{% endblock body-content %}

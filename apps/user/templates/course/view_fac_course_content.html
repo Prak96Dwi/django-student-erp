@@ -1,0 +1,210 @@
+{% extends 'core/base.html' %}
+{% load course_name_format %}
+{% load social_share %}
+
+{% block star-rating-css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
+integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" 
+crossorigin="anonymous"/>
+<link rel="stylesheet" type="text/css" 
+href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
+<style type="text/css">
+	.stars-outer{
+		position: relative;
+		display: inline-block;
+	}
+
+	.stars-inner{
+		position: absolute;
+		top: 0;
+		left: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		width: 0;
+	}
+
+	.stars-outer::before {
+	    content: "\f005 \f005 \f005 \f005 \f005";
+	    font-family: 'Font Awesome 5 Free';
+	    font-weight: 200;
+	    color: #ccc;
+	}
+
+	.stars-inner::before {
+	    content: "\f005 \f005 \f005 \f005 \f005";
+	    font-family: 'Font Awesome 5 Free';
+	    font-weight: 900;
+	    color: #f8ce0b;
+	}
+
+</style>
+{% endblock star-rating-css %}
+
+{% block body-content %}
+
+<div>
+	<center>
+		<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Modal title</h5>
+		      </div>
+		      <div class="modal-body">
+		        <p>Email Sent Successfully!!</p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<h3>Your Course Content</h3><br>
+	    <div class="container">
+	    	{% for ele in faculty_crs %}
+				 <div class="card" data-rating="{{ ele.average_rate }}" 
+				  data-course="{{ ele.course_name|course_name_change }}">
+				  <div class="card-body">
+				  	<div class="row">
+				  		<div class="col-md-4 col-bg-4 col-sm-4 col-lg-4">
+				  			<img class="card-img-top" 
+				  			 src="{{ ele.course_pic.url }}" 
+					  		 alt="Card image cap"
+					  		 height="100px" width="50px">
+				  		</div>
+				  		<div class="col-md-6 col-bg-6 col-sm-6 col-lg-6">
+				  			<h5 class="card-title">
+				  				<a href="{% url 'view-fac-course-detail' ele.id %}">
+				  				{{ ele.course_name }}
+				  				</a>
+				  			</h5>
+						    <small><b>{{ ele.fac_name }}</b></small><br>
+							    <b style="color: #cc6600">{{ ele.average_rate }}</b>
+							    	<div class="stars-outer">
+	   							 		<div class="stars-inner 
+	   							 		{{ ele.course_name|course_name_change }}" ></div>
+	   							 	</div>
+	   							 <span class="number-rating"></span>   					
+						    <small> ({{ ele.no_of_students_enrolled }})</small>
+						    <button
+							    onclick= "sendEmailFormUrl('{{ele.id}}')"
+							    href="#" id="shareid-{{ ele.id }}">
+								Share
+							</button>
+						    <div id="shareformid-{{ ele.id }}" class="shareformclass">
+						    	<input type="email" name="sharemail" id="friendemailid-{{ ele.id }}" 
+						    	placeholder="Enter Email Address" />
+						    	<input 
+						    	onclick= "sendEmailUrl('{{ele.id}}')" 
+						    	type="submit" 
+						    	name="" 
+						    	value="Send link" 
+
+						    	class="sendlinkbtn-{{ ele.id }}">
+						    </div>
+						     <!-- <a 
+						     href="mailto:?subject=UdemyCourseLink&body=127.0.0.1:8000{{ request.path }}">
+						     Share link with email
+						     </a> -->
+
+				  		</div>
+				  	</div>
+				  </div>
+				</div><br><br>
+	    	{% endfor %}
+	    </div>  
+	</center>
+</div>
+{% endblock body-content %}
+
+{% block star-rating-js %}
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<script type="text/javascript">
+	const ratearray = [];
+	const coursearray = [];
+	var myRating = new Object();
+
+	 $('.card').each(function(event){
+	 	var averateRating = $(this).data('rating');
+	 	ratearray.push(averateRating)
+
+	 	var courseName = $(this).data('course');
+	 	coursearray.push(courseName)
+	 });
+
+	for (let i = 0; i < ratearray.length; i++) {
+		var coursearr = coursearray[i]
+		var ratearr = ratearray[i]
+	 	myRating[coursearr] = ratearr;
+	}
+	// Total Stars
+	const starTotal = 5;
+
+	// Run getRatings when DOM Loads
+	document.addEventListener('DOMContentLoaded', getRatings());
+
+	// Get getRatings
+	function getRatings(){
+
+		for(let element in myRating){
+			// Get Percentage
+			const starPercentage = (myRating[element] / starTotal) * 100;
+
+			// Round to nearest 10
+			const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
+
+			// Set width of stars-inner to Percentage
+			document.querySelector(`.${element}`).style.width = starPercentageRounded
+		} // forloop closes
+	}	 // getRatings closes
+
+</script>
+{% endblock star-rating-js %}
+
+{% block ajax-share-link-js %}
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<script type="text/javascript">
+	function sendEmailUrl(formid){
+
+			// email form id 
+			var emailtextid = "#friendemailid-"+formid
+
+			var receiveremailid = $(emailtextid).val();
+
+			$.ajax({
+			       type:  "GET",
+			       url : "{% url "ajax-send-url-link" %}",
+			       data : {
+		            'email' : receiveremailid,
+		            'formid' : formid
+		            },
+			       dataType: 'json',
+			       success: function(data){
+
+			       	console.log(data[0])
+			       	$('#myModal').modal('show')
+
+			       } // success block closes
+	   			})  // ajax closes
+
+			$(".shareformclass").hide(); // form will hide again
+
+		}  // onFormLoad function closes
+
+
+		function sendEmailFormUrl(newid){
+			var formid = "shareformid-"+newid
+			$("#shareformid-"+newid).toggle();
+		}
+
+		$(document).ready(function(){
+
+			// hide share form
+			$(".shareformclass").hide();
+
+		}) // main document closes
+</script>
+{% endblock ajax-share-link-js %}

@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block body-content %}
+<div>
+	<center>
+		<h2>Result List</h2>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>S. No. </th>
+					<th>Student Name</th>
+					<th>Question Title</th>
+					<th>Status</th>
+					<th>Correct</th>
+					<th>Grade</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in data %}
+					<tr>
+						<td>{{ item.id }}</td>
+						<td>{{ item.stu_name }}</td>
+						<td>{{ item.title }}</td>
+						<td>{{ item.status }}</td>
+						<td>{{ item.is_correct }}</td>
+						<td>{{ item.grade }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</center>
+</div>
+
+{% endblock body-content %}

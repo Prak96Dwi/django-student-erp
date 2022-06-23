@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% block star-rating-css %}
+    {% endblock star-rating-css %}
+
+    <title>Student ERP</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Student ERP</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          {% if request.user.is_authenticated %}
+            {% if request.user.status == 'teacher' %}
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'fac-dash' %}">Dashboard</a>
+              </li>
+            {% elif request.user.is_superuser %}
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'admin-dash-board' %}">Dashboard</a>
+              </li>
+            {% else %}
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'stu-dash' %}">Dashboard</a>
+              </li>
+            {% endif %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Courses
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              {% if request.user.status == 'teacher' %}
+                <a class="dropdown-item" href="{% url 'fac-course-reg' %}">Course Registration</a>
+                <a class="dropdown-item" href="{% url 'fac-view-course-content' %}">View Course Content</a>
+                <a class="dropdown-item" href="{% url 'fac-course-content' %}">Upload Course Content</a>
+              {% elif request.user.is_superuser %}
+                <a class="dropdown-item" href="{% url 'view-fac-course-content' %}">View Courses</a>
+              {% else %}
+                <a class="dropdown-item" href="{% url 'stu-fac-eroll-form' %}">Eroll Course</a>
+                <a class="dropdown-item" href="{% url 'rate-review-form' %}">Give Rate & Reviews</a>
+                <a class="dropdown-item" href="{% url 'stu-course-enroll-content' %}">View Course Content</a>
+              {% endif %}
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dropdown link
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              {% if request.user.status == 'teacher' %}
+                <a class="dropdown-item" href="{% url 'fac-send-email' %}">Invite Students</a>
+                <a class="dropdown-item" href="{% url 'chech-wfh' %}">Check Homework</a>
+                <a class="dropdown-item" href="{% url 'teach-wfh' %}">Give Homework</a>
+                <a class="dropdown-item" href="{% url 'rate-review-view' %}">View Rating & Reviews</a>
+              {% elif request.user.is_superuser %}
+                <a class="dropdown-item" href="{% url 'admin-send-mail' %}">Invite Faculty</a>
+                <a class="dropdown-item" href="{% url 'admin-invite-list' %}">Invitation List</a>    
+              {% else %}
+                <a class="dropdown-item" href="{% url 'stu-ques-data' %}">Your Questions</a>
+                <a class="dropdown-item" href="{% url 'stu-ans-data' %}">Result Data</a>
+                <a class="dropdown-item" href="{% url 'rate-review-view' %}">View Rating & Reviews</a>
+              {% endif %}
+               <a class="dropdown-item" href="{% url 'view-fac-course-content' %}">View Courses</a>
+               <a class="dropdown-item" href="{% url 'create-one-room' %}">Chat</a>
+               <a class="dropdown-item" href="{% url 'log-out' %}">Log Out</a>
+            {% else %}
+              <li class="nav-item">
+                <a href="{% url 'login-form' %}">
+                <button type="button" class="btn btn-primary">
+                  Login 
+                </button>
+                </a>
+              </li>
+            {% endif %}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    {% block body-content %}
+    {% endblock body-content %}
+
+    {% block star-rating-js %}
+    {% endblock star-rating-js %}
+
+    {% block ajax-upvoting-js %}
+    {% endblock ajax-upvoting-js %}
+
+    {% block ajax-share-link-js %}
+    {% endblock ajax-share-link-js %}
+
+  </body>
+</html>
